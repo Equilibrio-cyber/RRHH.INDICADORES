@@ -604,6 +604,19 @@ def eliminar_pregunta(pregunta_id):
     return redirect(url_for('gestion_preguntas'))
 
 # ------------------- MAIN -------------------
+from flask import Flask
+from your_model_file import db, Usuario  # Ajusta la importación según tu proyecto
+
+@app.route('/crear_db')
+def crear_db():
+    db.create_all()
+    # Solo si no existe, crea un usuario admin
+    if not Usuario.query.filter_by(usuario="admin").first():
+        admin = Usuario(usuario="admin", password="Admin2025", rol="admin", activo=True)
+        db.session.add(admin)
+        db.session.commit()
+    return "Base de datos y usuario admin creados."
+
 
 if __name__ == "__main__":
     app.run(debug=True)
